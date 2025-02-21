@@ -1,4 +1,4 @@
-name: Pipeline de Deploy
+name: Pipeline de produção
 
 env:
     NODE_ENV: production
@@ -8,21 +8,17 @@ env:
 on:
     push:
         branches: 
-            - main
+          - main
 
 jobs:
-    job1:
-        name: CI - Build e criação do artefato
-        runs-on: ubuntu-latest
 
-        steps:
+
+  job1:
+      name: CI - Build e criação do artefato
+      runs-on: ubuntu-latest
+      steps:
         - name: Pegar o código do repositório
           uses: actions/checkout@v4
-
-        - name: Configurando Node.js
-          uses: actions/setup-node@v4
-          with:
-              node-version: 18
 
         - name: Instalando os pacotes do npm
           run: npm install
@@ -36,31 +32,30 @@ jobs:
         - name: Apagando pasta .git
           run: rm -rf .git
 
-        - name: Listando arquivos e pastas
+        - name: Arquivos e pastas
           run: ls
 
-        - name: Criando artefato ZIP do código
+        - name: Criando artefato ZIP do código buildado
           uses: actions/upload-artifact@v4
           with:
-              name: artefato
-              retention-days: 1
-              path: ./
+            name: artefato
+            retention-days: 1
+            path: ./
 
-    job2:
-        name: CD - Deploy na Vercel
-        needs: job1
-        runs-on: ubuntu-latest
-
-        steps:
-        - name: Baixando Artefato do código
+  job2:
+      name: CD - Deploy na Vercel
+      needs: job1
+      runs-on: ubuntu-latest
+      steps:
+        - name: Baixando Artefato do código buildado
           uses: actions/download-artifact@v4
           with:
-              name: artefato
+            name: artefato
 
         - name: Instalando os pacotes do npm
           run: npm install
 
-        - name: Listando arquivos e pastas do artefato
+        - name: Arquivos e pastas do artefato
           run: ls
 
         - name: Instalando CLI da Vercel
@@ -69,8 +64,9 @@ jobs:
         - name: Buscando informações de ambiente no Vercel
           run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-        - name: Building do artefato do projeto
+        - name: Buildando artefatos do projeto
           run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
         - name: Deploy do artefato do projeto na Vercel
-          run: vercel deploy --prebuild --prod --token=${{ secrets.VERCEL_TOKEN }}
+          run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        
