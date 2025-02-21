@@ -1,0 +1,40 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API dp BoardTasks",
+    "description": "Documentação da API do BoardTasks."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Servidor localhost"
+    },
+    {
+      "url": "https://b-board-task.vercel.app/",
+      "description": "Servidor de produção."
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}
