@@ -54,6 +54,9 @@ jobs:
 
         - name: Instalando os pacotes do npm
           run: npm install
+          
+        - name: Gerando documentação Swagger
+          run: npm run autoDoc
 
         - name: Arquivos e pastas do artefato
           run: ls
