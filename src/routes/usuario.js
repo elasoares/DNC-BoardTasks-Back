@@ -3,6 +3,7 @@ const router = express.Router();
 const conectarBD = require('../middlewares/conectarBD.js');
 const tratarErrosEsperados = require('../functions/tratarErrosEsperados.js');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const userSchema = require('../models/usuario.js');
 
 /* GET users listing. */
@@ -37,7 +38,7 @@ router.post('/logar', conectarBD, async function (req, res) {
     if(respostaBD){
         let senhaCorreta = await bcrypt.compare(senha, respostaBD.senha);
         if(senhaCorreta){
-          let token = jws.sign({id: respostaBD._id}, process.env.JWT_SECRET, {expiresIn: 'id'});
+          let token = jwt.sign({id: respostaBD._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
 
           res.header('x-auth-token', token);
           res.status(200).json({
