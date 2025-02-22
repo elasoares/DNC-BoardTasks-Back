@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userSchema = require('../models/usuario.js');
 
+
 /* GET users listing. */
 router.post('/criar', conectarBD ,  async function(req, res) {
   try{
