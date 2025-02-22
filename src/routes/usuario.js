@@ -9,7 +9,7 @@ const userSchema = require('../models/usuario.js');
 
 router.post('/criar', conectarBD ,  async function(req, res) {
   try{
-    // #swagger.tag = ['Usuario']
+    // #swagger.tags = ['Usuario']
     let {nome, email, senha} = req.body;
     const numeroVezesHash = 10;
     const senhaHash = await bcrypt.hash(senha, numeroVezesHash);
@@ -32,7 +32,7 @@ router.post('/criar', conectarBD ,  async function(req, res) {
 
 router.post('/logar', conectarBD, async function (req, res) {
   try{
-    // #swagger.tag = ['Usuario']
+    // #swagger.tags = ['Usuario']
     let {email, senha}= req.body;
     let respostaBD = await userSchema.findOne({email}).select('+senha');
     if(respostaBD){
