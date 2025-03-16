@@ -17,6 +17,7 @@
     "mongoose-to-swagger": "^1.5.1",
     "morgan": "~1.9.1",
     "swagger-autogen": "^2.23.7",
+    "swagger-ui-dist": "^5.20.1",
     "swagger-ui-express": "^5.0.1"
   },
   "engines": {
