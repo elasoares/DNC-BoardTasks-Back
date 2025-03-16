@@ -1,34 +1,37 @@
-
 const mongoose = require('mongoose');
 
-const schema = new mongoose.Schema({
-
-    titulo:{
-        type: String,
-        required: "O campo título é obrigatório!",
+const esquema = new mongoose.Schema(
+  {
+    posicao: {
+      type: Number,
+      required: 'é obrigatório!',
+    },
+    titulo: {
+      type: String,
+      required: 'é obrigatório!',
     },
     descricao: {
-        type: String,
-        default: "",
+      type: String,
+      default: '',
     },
     status: {
-        type: String,
-        required: "O campo status é obrigatório!",
+      type: String,
+      required: 'é obrigatório!',
     },
     dataEntrega: {
-        type: Date,
-        default: null,
+      type: Date,
+      default: null,
     },
     usuarioCriador: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario',
-        required: "O campo é obrigatório!",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Usuario',
+      required: 'é obrigatório!',
     },
-},
-{
+  },
+  {
     timestamps: true
-}
+  }
 );
 
-const EsquemaTarefa = mongoose.models.Tarefa || mongoose.model('Tarefa', schema);
+const EsquemaTarefa = mongoose.models.Tarefa || mongoose.model('Tarefa', esquema);
 module.exports = EsquemaTarefa;

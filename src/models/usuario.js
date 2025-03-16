@@ -1,34 +1,33 @@
-const { lowerCase } = require('lodash');
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const schema = new mongoose.Schema({
-
-    nome:{
-        type: String,
-        required: 'O campo nome é obrigatório!',
+const esquema = new mongoose.Schema(
+    {
+        nome: {
+            type: String,
+            required: 'é obrigatório!',
+        },
+        email: {
+            type: String,
+            unique: true,
+            required: 'é obrigatório!',
+            lowercase: true,
+            index: true,
+            validate: {
+                validator: (valorDigitado) => { return validator.isEmail(valorDigitado) },
+                message: 'inválido!'
+            }
+        },
+        senha: {
+            type: String,
+            required: 'é obrigatório!',
+            select: false,
+        },
     },
-    email:{
-        type: String,
-        unique: true,
-        required: "O campo e-mail é obrigatório!",
-        lowerCase: true,
-        index: true,
-        validator:{
-            validator: (validator)=>{return validator.isEmail(validator)},
-            message: "Campo inválido!"
-        }
-    },
-    senha: {
-        type: String,
-        required: "O campo senha é obrigatório!",
-        select: false,
-    },
-},
-{
-    timestamps: true
-}
+    {
+        timestamps: true
+    }
 );
 
-const EsquemaUsuario = mongoose.models.Usuario || mongoose.model('Usuario', schema);
+const EsquemaUsuario = mongoose.models.Usuario || mongoose.model('Usuario', esquema);
 module.exports = EsquemaUsuario;

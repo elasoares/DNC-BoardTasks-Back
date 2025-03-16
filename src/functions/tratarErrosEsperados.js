@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-function tratarErros(res, err){
+function tratarErrosEsperados(res, err){
     if (String(err).includes("ValidationError: ")) {
         return res.status(400).json({
             status: "Erro",
@@ -25,4 +25,4 @@ function tratarErros(res, err){
     });
 }
 
-module.exports = tratarErros;
+module.exports = tratarErrosEsperados;

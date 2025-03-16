@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const tratarErros = require('../functions/TratarErrors');
+const tratarErrosEsperados = require('../functions/tratarErrosEsperados');
 
 async function connectMongoDB(req = null, res = null, next = null){
   try{
@@ -9,7 +9,7 @@ async function connectMongoDB(req = null, res = null, next = null){
     return mongoose;
   }catch(error){
     console.error(error);
-    tratarErros(res, "Error: Error ao conectar ao banco de dados. ")
+    tratarErrosEsperados(res, "Error: Error ao conectar ao banco de dados. ")
     return error;
   }
 }

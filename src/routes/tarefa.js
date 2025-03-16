@@ -1,110 +1,98 @@
-
 const express = require('express');
-const router = express.Router();
-const connectMongoDB = require('../middlewares/Conect-MongoDB');
-const EsquemaTarefa = require('../models/tarefa');
+const tratarErrosEsperados = require('../functions/tratarErrosEsperados');
 const authUser = require('../middlewares/authUser');
+const conectarBancoDados = require('../middlewares/Conect-MongoDB');
+const EsquemaTarefa = require('../models/tarefa');
+const router = express.Router();
 
 
-router.post('/criar', authUser, connectMongoDB, async function(req, res, next) {
-  try{
+router.post('/criar', authUser, conectarBancoDados, async function (req, res) {
+  try {
     // #swagger.tags = ['Tarefa']
-
-    let { titulo, descricao, status, dataEntrega } = req.body;
+    let { posicao, titulo, descricao, status, dataEntrega } = req.body;
     const usuarioCriador = req.usuarioJwt.id;
-    const respostaDB = await EsquemaTarefa.create({ titulo, descricao, status, dataEntrega, usuarioCriador });
+    const respostaBD = await EsquemaTarefa.create({ posicao, titulo, descricao, status, dataEntrega, usuarioCriador });
 
     res.status(200).json({
-      status: "Ok",
-      statusMensagem: "Tarefa criada com sucesso!",
-      resposta: respostaDB
-    });
+      status: "OK",
+      statusMensagem: "Tarefa criada com sucesso.",
+      resposta: respostaBD
+    })
 
-
-  }catch(error){
-    return tratarErros(res, error);
+  } catch (error) {
+    return tratarErrosEsperados(res, error);
   }
 });
 
-router.put('/editar/:id', authUser, connectMongoDB, async function(req, res, next) {
-  try{
+
+router.put('/editar/:id', authUser, conectarBancoDados, async function (req, res) {
+  try {
     // #swagger.tags = ['Tarefa']
     let idTarefa = req.params.id;
-
-    let { titulo, descricao, status, dataEntrega } = req.body;
-
+    let { posicao, titulo, descricao, status, dataEntrega } = req.body;
     const usuarioLogado = req.usuarioJwt.id;
 
-    const checkTarefa = await EsquemaTarefa.findOne({_id: idTarefa, usuarioCriador: usuarioLogado})
-
-    if(!checkTarefa){
-      throw new Error("Tarefa não encontrada ou pertence a outro usuário.")
+    const checkTarefa = await EsquemaTarefa.findOne({ _id: idTarefa, usuarioCriador: usuarioLogado });
+    if (!checkTarefa) {
+      throw new Error("Tarefa não encontrada ou pertence a outro usuário");
     }
 
-    const tarefaAtualizada = await EsquemaTarefa.updateOne({_id: idTarefa},{ titulo, descricao, status, dataEntrega });
-    if(tarefaAtualizada?.modifiedCount > 0){
-      const dadostarefa = await EsquemaTarefa.findOne({_id: idTarefa}).populate('usuarioCriador');
+    const tarefaAtualizada = await EsquemaTarefa.updateOne({ _id: idTarefa }, { posicao, titulo, descricao, status, dataEntrega });
+    if (tarefaAtualizada?.modifiedCount > 0) {
+      const dadosTarefa = await EsquemaTarefa.findOne({ _id: idTarefa }).populate('usuarioCriador');
+
       res.status(200).json({
-        status: "Ok",
-        statusMensagem: "Tarefa atualizada com sucesso!",
-        resposta: dadostarefa
-      });
-  
+        status: "OK",
+        statusMensagem: "Tarefa atualizada com sucesso.",
+        resposta: dadosTarefa
+      })
     }
-    
-
-  }catch(error){
-    return tratarErros(res, error);
+  } catch (error) {
+    return tratarErrosEsperados(res, error);
   }
-  
 });
 
 
-router.get('/obter', authUser, connectMongoDB, async function(req, res, next) {
-  try{
+router.get('/obter/usuario', authUser, conectarBancoDados, async function (req, res) {
+  try {
     // #swagger.tags = ['Tarefa']
-    // #swagger.description = "Endpoint para obter todas as tarefas de usuário logado."
+    // #swagger.description = "Endpoint para obter todas tarefas do usuario logado."
     const usuarioLogado = req.usuarioJwt.id;
-    const respostaDB = await EsquemaTarefa.find({usuarioCriador: usuarioLogado}).populate('usuarioCriador');
+    const respostaBD = await EsquemaTarefa.find({ usuarioCriador: usuarioLogado }).populate('usuarioCriador');
 
     res.status(200).json({
-      status: "Ok",
-      statusMensagem: "Tarefas listadas com sucesso!",
-      resposta: respostaDB
-    });
+      status: "OK",
+      statusMensagem: "Tarefas listadas na respota com sucesso.",
+      resposta: respostaBD
+    })
 
-
-  }catch(error){
-    return tratarErros(res, error);
+  } catch (error) {
+    return tratarErrosEsperados(res, error);
   }
 });
 
-router.delete('/deletar/:id', authUser, connectMongoDB, async function(req, res, next) {
-  try{
+
+router.delete('/deletar/:id', authUser, conectarBancoDados, async function (req, res) {
+  try {
     // #swagger.tags = ['Tarefa']
-
-    const idtarefa = req.params.id;
-
+    const idTarefa = req.params.id;
     const usuarioLogado = req.usuarioJwt.id;
 
-    const checkTarefa = await EsquemaTarefa.findOne({_id: idtarefa, usuarioCriador: usuarioLogado});
-    if(!checkTarefa){
-      throw new Error("Tarefa não encontrada ou pertence a outro usuário.")
+    const checkTarefa = await EsquemaTarefa.findOne({ _id: idTarefa, usuarioCriador: usuarioLogado });
+    if (!checkTarefa) {
+      throw new Error("Tarefa não encontrada ou pertence a outro usuário");
     }
 
-    const respostaDB = await EsquemaTarefa.deleteOne({_id: idtarefa});
-
+    const respostaBD = await EsquemaTarefa.deleteOne({ _id: idTarefa });
     res.status(200).json({
-      status: "Ok",
-      statusMensagem: "Tarefas deletada com sucesso!",
-      resposta: respostaDB
-    });
+      status: "OK",
+      statusMensagem: "Tarefa deletada com sucesso.",
+      resposta: respostaBD
+    })
 
-
-  }catch(error){
-    return tratarErros(res, error);
+  } catch (error) {
+    return tratarErrosEsperados(res, error);
   }
 });
-
 
 module.exports = router;
