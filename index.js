@@ -18,7 +18,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/swagger-ui.css', express.static(path.join(__dirname, 'public', 'swagger-ui.css')));
+app.use('/swagger-ui-bundle.js', express.static(path.join(__dirname, 'public', 'swagger-ui-bundle.js')));
+app.use('/swagger-ui-standalone-preset.js', express.static(path.join(__dirname, 'public', 'swagger-ui-standalone-preset.js')));
 
 
 
@@ -27,10 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 if(process.env.NODE_ENV !== 'test'){
     const swaggerFile = require('./swagger/swagger_output.json');
-    app.get('/', (req, res) => {
-        res.redirect('/doc');
-    });
-    app.use('/doc', authDocProducao, swaggerUi.serve, swaggerUi.setup(swaggerFile, swaggerOptions));
+    app.get('/', (req, res)=>{/* #swagger.ignore = true */ res.redirect('/doc')});
+    app.use('/doc',  authDocProducao, swaggerUi.serve, swaggerUi.setup(swaggerFile, swaggerOptions));
 }
 
 
