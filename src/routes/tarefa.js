@@ -11,8 +11,8 @@ router.post('/criar', authUser, connectMongoDB, async function(req, res, next) {
     // #swagger.tags = ['Tarefa']
 
     let { posicao, titulo, descricao, status, dataEntrega } = req.body;
-    const usuarioLogado = req.usuarioJwt.id;
-    const respostaDB = await EsquemaTarefa.create({ posicao, titulo, descricao, status, dataEntrega, usuarioLogado });
+    const usuarioCriador = req.usuarioJwt.id;
+    const respostaDB = await EsquemaTarefa.create({ posicao, titulo, descricao, status, dataEntrega, usuarioCriador });
 
     res.status(200).json({
       status: "Ok",
@@ -56,8 +56,28 @@ router.put('/editar/:id', authUser, connectMongoDB, async function(req, res, nex
   }catch(error){
     return tratarErros(res, error);
   }
+  
 });
 
+
+router.get('/obter/tarefas', authUser, connectMongoDB, async function(req, res, next) {
+  try{
+    // #swagger.tags = ['Tarefa']
+    // #swagger.description = "Endpoint para obter todas as tarefas de usuário logado."
+    const usuarioLogado = req.usuarioJwt.id;
+    const respostaDB = await EsquemaTarefa.find({usuarioCriador: usuarioLogado}).populate('usuarioCriador');
+
+    res.status(200).json({
+      status: "Ok",
+      statusMensagem: "Tarefas listadas com sucesso!",
+      resposta: respostaDB
+    });
+
+
+  }catch(error){
+    return tratarErros(res, error);
+  }
+});
 
 
 module.exports = router;
