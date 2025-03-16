@@ -59,6 +59,7 @@ router.post('/logar', connectMongoDB,  async function(req, res){
   }
 
   }catch(error){
+
     return tratarErros(res, error);
   }
 })
