@@ -1,8 +1,11 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+const connectMongoDB = require('../middlewares/Conect-MongoDB');
+
+
+router.get('/', connectMongoDB, function(req, res, next) {
+  res.send('respond with a resource 50 var' + process.env.TEST);
 });
 
 module.exports = router;

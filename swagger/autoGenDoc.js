@@ -1,4 +1,5 @@
 const mongooseToSwagger = require('mongoose-to-swagger');
+const EsquemaUsuario = require('../src/models/usuario.js');
 const swaggerAutogen = require('swagger-autogen')({
     openapi: '3.0.0',
     language: 'pt-BR',
@@ -13,10 +14,10 @@ let doc = {
         title: "API do BoardTasks",
         description: "Documentação da API"
     },
-    serves: [
+    servers: [
         {
             url: "http://localhost:4000/",
-            description: "Servidor localhost."
+            description: "Servidor localhost"
         },
         {
             url: "https://dnc-board-tasks-back-iota.vercel.app/",
@@ -25,16 +26,19 @@ let doc = {
     ],
     consumes: ['application/json'],
     produces: ['application/json'],
+    components:{
+        schemas:{
+            Usuario: mongooseToSwagger(EsquemaUsuario)
+        }
+    }
 };
-
-
 
 swaggerAutogen(outputFile, endpointsFiles, doc)
     .then(() => {
         console.log("Documentação gerada com sucesso em:", outputFile);
         if (process.env.NODE_ENV !== 'production') {
             console.log("Iniciando o servidor...");
-            require("../index.js");
+            require("../index.js");  // Certifique-se de que este caminho está correto
         }
     })
     .catch((error) => {

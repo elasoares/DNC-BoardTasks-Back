@@ -13,12 +13,15 @@
     "debug": "~2.6.9",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.14.2",
     "mongoose": "^8.12.1",
     "mongoose-to-swagger": "^1.5.1",
     "morgan": "~1.9.1",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-dist": "^5.20.1",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "validator": "^13.12.0"
   },
   "engines": {
     "node": "22.x"
