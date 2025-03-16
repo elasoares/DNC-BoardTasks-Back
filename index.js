@@ -4,7 +4,11 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
-const swaggerOptions = { customCssUrl: '/swagger-ui.css' };
+const swaggerOptions = {
+    customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.38.0/swagger-ui.css',
+    customJsUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.38.0/swagger-ui-bundle.js'
+};
+
 const routes = require('./src/routes');
 const authDocProducao = require('./src/middles/authDoc');
 
@@ -18,12 +22,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/swagger-ui.css', express.static(path.join(__dirname, 'public', 'swagger-ui.css')));
-app.use('/swagger-ui-bundle.js', express.static(path.join(__dirname, 'public', 'swagger-ui-bundle.js')));
-app.use('/swagger-ui-standalone-preset.js', express.static(path.join(__dirname, 'public', 'swagger-ui-standalone-preset.js')));
-
-
-
 
 
 
