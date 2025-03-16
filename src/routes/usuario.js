@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 
 router.post('/criar', connectMongoDB, async function(req, res, next) {
   try{
-    // #swagger.tags = ['Usuario]
+    // #swagger.tags = ['Usuario']
 
     let { nome, email, senha } = req.body;
     const numeroVezesHash = 10;
@@ -34,6 +34,7 @@ router.post('/criar', connectMongoDB, async function(req, res, next) {
 
 router.post('/logar', connectMongoDB,  async function(req, res){
   try{
+    // #swagger.tags = ['Usuario']
     let { email, senha } = req.body;
     let respostaDB = await EsquemaUsuario.findOne({email}).select('+senha');
 
