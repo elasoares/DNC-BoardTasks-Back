@@ -3,10 +3,6 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
 
-    posicao:{
-        type: Number,
-        required: 'O campo posição é obrigatório!',
-    },
     titulo:{
         type: String,
         required: "O campo título é obrigatório!",
