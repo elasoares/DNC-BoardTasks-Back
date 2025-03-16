@@ -17,7 +17,9 @@ const app = express();
 
 require('dotenv').config();
 
-app.use(cors());
+app.use(cors({
+    origin: '*',  // ou defina um domínio específico se necessário
+  }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
