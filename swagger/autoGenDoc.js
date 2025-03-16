@@ -40,7 +40,7 @@ swaggerAutogen(outputFile, endpointsFiles, doc)
         console.log("Documentação gerada com sucesso em:", outputFile);
         if (process.env.NODE_ENV !== 'production') {
             console.log("Iniciando o servidor...");
-            require("../index.js");  // Certifique-se de que este caminho está correto
+            require("../index.js");  
         }
     })
     .catch((error) => {
