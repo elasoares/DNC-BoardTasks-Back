@@ -6,9 +6,9 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerOptions = {
     customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.38.0/swagger-ui.css',
-    customJsUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.38.0/swagger-ui-bundle.js'
-};
-
+    customJsUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.38.0/swagger-ui-bundle.js',
+  };
+  
 const routes = require('./src/routes');
 const authDocProducao = require('./src/middles/authDoc');
 
@@ -17,9 +17,7 @@ const app = express();
 
 require('dotenv').config();
 
-app.use(cors({
-    origin: '*',  // ou defina um domínio específico se necessário
-  }));
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
