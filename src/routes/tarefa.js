@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const connectMongoDB = require('../middlewares/Conect-MongoDB');
-const EsquemaTarefa = require('../models/tarefas');
+const EsquemaTarefa = require('../models/tarefa');
 const authUser = require('../middlewares/authUser');
 
 
