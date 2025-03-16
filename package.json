@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./index.js",
     "autoDoc": "node ./swagger/autoGenDoc.js",
-    "dev": "npx nodemon ./swagger/autoGenDoc.js" 
+    "dev": "npx nodemon ./swagger/autoGenDoc.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -18,5 +18,8 @@
     "morgan": "~1.9.1",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
