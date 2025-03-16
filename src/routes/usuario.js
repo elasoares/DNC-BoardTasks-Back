@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const connectMongoDB = require('../middlewares/Conect-MongoDB');
 const tratarErros = require('../functions/TratarErrors');
 const EsquemaUsuario = require('../models/usuario');
-
+const jwt = require('jsonwebtoken');
 
 router.post('/criar', connectMongoDB, async function(req, res, next) {
   try{
@@ -31,4 +31,35 @@ router.post('/criar', connectMongoDB, async function(req, res, next) {
   }
 });
 
+
+router.post('/logar', connectMongoDB,  async function(req, res){
+  try{
+    let { email, senha } = req.body;
+    let respostaDB = await EsquemaUsuario.findOne({email}).select('+senha');
+
+    if(respostaDB){
+
+      let senhaCorreta = await bcrypt.compare(senha, respostaDB.senha);
+
+      if(senhaCorreta){
+
+          let token = jwt.sign({id: respostaDB._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
+
+          res.header('x-auth-token', token);
+          res.status(200).json({
+            status: "Ok",
+            statusMensagem: "Usuário autenticado com sucesso!",
+            resposta: { "x-auth-token": token }
+          });
+      }else{
+        throw new Error("E-mail ou senha incorreta.")
+      }
+    }else{
+      throw new Error("E-mail ou senha incorreta.")
+  }
+
+  }catch(error){
+    return tratarErros(res, error);
+  }
+})
 module.exports = router;
