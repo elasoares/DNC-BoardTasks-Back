@@ -45,4 +45,7 @@ let doc = {
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
     console.log("Documentação do Swagger gerada com sucesso!");
+    if(process.env.NODE_ENV === 'production'){
+        require('../index.js');
+    }   
 })
