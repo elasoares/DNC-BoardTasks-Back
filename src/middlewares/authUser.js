@@ -1,8 +1,5 @@
-const jwt = require('jsonwebtoken');
-const tratarErrosEsperados = require('../functions/tratarErrosEsperados');
-
 async function authUser(req, res, next) {
-    const token = req.headers['x-auth-token'];
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]; 
 
     if (!token) {
         return tratarErrosEsperados(res, new Error("Token de autenticação não fornecido"));
@@ -19,5 +16,3 @@ async function authUser(req, res, next) {
         return tratarErrosEsperados(res, new Error("Token de autenticação inválido"));
     }
 }
-
-module.exports = authUser;
