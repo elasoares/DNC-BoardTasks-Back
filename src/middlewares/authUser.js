@@ -16,3 +16,5 @@ async function authUser(req, res, next) {
         return tratarErrosEsperados(res, new Error("Token de autenticação inválido"));
     }
 }
+
+module.exports = authUser;
